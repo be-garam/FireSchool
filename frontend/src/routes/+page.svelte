@@ -10,7 +10,7 @@
                 <div class="w-full">
                     <Input type="url" id="website" placeholder="Enter School code to fire" required />
                 </div>
-                <GradientButton outline color="pinkToOrange" class="w-40">Fire🔥</GradientButton>
+                <GradientButton href="/loading" outline color="pinkToOrange" class="w-40">Fire🔥</GradientButton>
             </div>  
             <Helper class="text-sm">
                 We’ll never share your details. Read our <a href="/" class="font-medium text-primary-600 hover:underline dark:text-primary-500"> Privacy Policy </a>
