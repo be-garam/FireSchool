@@ -1,5 +1,6 @@
 <script>
     import {Card, Listgroup, GradientButton, Badge, Label, Input, InputAddon, ButtonGroup, Button} from 'flowbite-svelte';
+    import { onMount } from 'svelte';
     
     let path = 'https://github.com/be-garam'
     
@@ -35,16 +36,13 @@
         }
     ];
 
-    let chat_list = [
-        {
-            speaker: 'bot',
-            message: "Let's fire the school🔥"
-        },
-        {
-            speaker: 'user',
-            message: "🔥"
-        }
-    ]
+    let chat_list = [];
+
+    onMount(async () => {
+        const res = await fetch('/chatlist.json');
+        chat_list = await res.json();
+        console.log(chat_list);
+    });
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100 gap-x-10 p-24">
@@ -82,13 +80,6 @@
     </div>
     <div class="flex-1 flex h-full flex-col space-y-4">
         <div class="flex-auto">
-            {#each chat_list as chat (chat.message)}
-                {#if chat.speaker === 'bot'}
-                    <p style="text-align: left;">{chat.message}</p>
-                {:else if chat.speaker === 'user'}
-                    <p style="text-align: right;">{chat.message}</p>
-                {/if}
-            {/each}
         </div>
         <div class=flex-none>
             <ButtonGroup class="w-full">
