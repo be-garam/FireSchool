@@ -17,3 +17,7 @@ $ npm intsall flowbite flowbite-svelte classnames @popperjs/core
 $ npm run dev -- --host
 ```
 - after setting like above, we need to update [tailwind.confg.cjs](frontend/tailwind.config.cjs)
+
+## Task
+- [ ] increasing width more than 96(384px)
+- [ ] custom button
