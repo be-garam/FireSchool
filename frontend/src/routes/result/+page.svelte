@@ -36,13 +36,16 @@
         }
     ];
 
+    let pre_chat_list = [];
     let chat_list = [];
 
     onMount(async () => {
-        const res = await fetch('/chatlist.json');
-        chat_list = await res.json();
-        console.log(chat_list);
+        const res = await fetch('./chat.json');
+        pre_chat_list = await res.json();
+        chat_list = pre_chat_list.messages;
+        console.log(chat_list.messages);
     });
+
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100 gap-x-10 p-24">
@@ -62,7 +65,7 @@
                     <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
                         {item.name}
                     </p>
-                    <GradientButton href={item.path} outline color="pinkToOrange" class="w-40">Fire🔥</GradientButton>
+                    <GradientButton href={item.path} outline color="cyanToBlue" class="w-40">🌊 Surf</GradientButton>
                 </div>
             </Listgroup>
         </Card>
@@ -73,18 +76,21 @@
                     <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
                         {item.name}
                     </p>
-                    <GradientButton href={item.path} outline color="pinkToOrange" class="w-40">Fire🔥</GradientButton>
+                    <GradientButton href={item.path} outline color="cyanToBlue" class="w-40">🌊 Surf</GradientButton>
                 </div>
             </Listgroup>
         </Card>
     </div>
     <div class="flex-1 flex h-full flex-col space-y-4">
         <div class="flex-auto">
+            {#each chat_list as {speaker, message}}
+                <h2>{speaker} {message}</h2>
+            {/each}
         </div>
         <div class=flex-none>
             <ButtonGroup class="w-full">
               <Input type="text" placeholder="💬 Chat here" size="lg" />
-              <GradientButton color="pinkToOrange" size="lg">Send</GradientButton>
+              <GradientButton color="cyanToBlue" size="lg">Send</GradientButton>
             </ButtonGroup>
         </div>
     </div>

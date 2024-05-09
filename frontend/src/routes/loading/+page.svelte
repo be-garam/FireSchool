@@ -9,8 +9,8 @@
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100">
     <div class="flex flex-col space-y-10 items-center justify-center">
-        <p class="text-6xl">Firing School...</p>
-        <p class="text-6xl">🔥</p>
-        <GradientButton href="/result" outline color="pinkToOrange" class="w-40">test</GradientButton>
+        <p class="text-6xl">Surfing School...</p>
+        <p class="text-6xl">🌊🏄</p>
+        <GradientButton href="/result" outline color="cyanToBlue" class="w-40">test</GradientButton>
     </div>
 </div>
