@@ -2,11 +2,11 @@
     "messages":[
         {
             "speaker": "bot",
-            "message": "Let's fire the school🔥"
+            "message": "Let's surf the school 🌊"
         },
         {
             "speaker": "user",
-            "message": "🔥"
+            "message": "🏄"
         }
     ]
 }

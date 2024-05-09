@@ -1,5 +1,5 @@
 <script>
-    import {Card, Listgroup, GradientButton, Badge, Label, Input, InputAddon, ButtonGroup, Button} from 'flowbite-svelte';
+    import {Card, Listgroup, GradientButton, Badge, Input, ButtonGroup, P} from 'flowbite-svelte';
     import { onMount } from 'svelte';
     
     let path = 'https://github.com/be-garam'
@@ -65,7 +65,7 @@
                     <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
                         {item.name}
                     </p>
-                    <GradientButton href={item.path} outline color="cyanToBlue" class="w-40">🌊 Surf</GradientButton>
+                    <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
                 </div>
             </Listgroup>
         </Card>
@@ -76,15 +76,32 @@
                     <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
                         {item.name}
                     </p>
-                    <GradientButton href={item.path} outline color="cyanToBlue" class="w-40">🌊 Surf</GradientButton>
+                    <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
                 </div>
             </Listgroup>
         </Card>
     </div>
     <div class="flex-1 flex h-full flex-col space-y-4">
-        <div class="flex-auto">
+        <div class="flex-auto flex-col space-y-4">
             {#each chat_list as {speaker, message}}
-                <h2>{speaker} {message}</h2>
+                {#if speaker == 'user'}
+                    <div class="w-full items-end flex">
+                        <div class="w-2/5"></div>
+                        <div class="w-3/5 p-4 bg-white rounded-lg border">
+                            <P color="text-green-700 dark:text-green-500">{speaker}</P>
+                            {message}
+                        </div>
+                    </div>
+                {/if}
+                {#if speaker == 'bot'}
+                    <div class="w-full items-end flex">
+                        <div class="w-3/5 p-4 bg-white rounded-lg border">
+                            <P color="text-blue-700 dark:text-blue-500">{speaker}</P>
+                            {message}
+                        </div>
+                        <div class="w-2/5"></div>
+                    </div>
+                {/if}
             {/each}
         </div>
         <div class=flex-none>
