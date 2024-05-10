@@ -12,11 +12,12 @@ export function getMessages(userid) {
             speaker: "bot",
             message: "Let's surf the school 🌊"
 		},
-        {
-			id: crypto.randomUUID(),
-            speaker: "user",
-            message: "🏄"
-		}]);
+        // {
+		// 	id: crypto.randomUUID(),
+        //     speaker: "user",
+        //     message: "🏄"
+		// }
+	]);
 	}
 
 	return db.get(userid);
@@ -31,3 +32,14 @@ export function createChat(userid, chat) {
         message: chat
 	});
 }
+
+export function getAnswer(userid, chat) {
+	const messages = db.get(userid);
+
+	messages.push({
+		id: crypto.randomUUID(),
+		speaker: "bot",
+        message: "answer example"
+	});
+}
+

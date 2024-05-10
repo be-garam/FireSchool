@@ -17,5 +17,6 @@ export const actions = {
 	default: async ({ cookies, request }) => {
 		const data = await request.formData();
 		db.createChat(cookies.get('userid'), data.get('chat'));
+        db.getAnswer(cookies.get('userid'), data.get('chat'));
 	}
 };

@@ -109,7 +109,7 @@
             <form method="post">
                 <ButtonGroup class="w-full">
                     <Input type="text" placeholder="💬 Chat here" size="lg" name="chat" autocomplete="off"/>
-                    <GradientButton color="cyanToBlue" size="lg">Send</GradientButton>
+                    <!-- <GradientButton color="cyanToBlue" size="lg">Send</GradientButton> -->
                 </ButtonGroup>
             </form>
         </div>
