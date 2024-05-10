@@ -46,6 +46,7 @@
         console.log(chat_list.messages);
     });
 
+    export let data;
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100 gap-x-10 p-24">
@@ -83,21 +84,21 @@
     </div>
     <div class="flex-1 flex h-full flex-col space-y-4">
         <div class="flex-auto flex-col space-y-4">
-            {#each chat_list as {speaker, message}}
-                {#if speaker == 'user'}
+            {#each data.messages as messages (messages.id)}
+                {#if messages.speaker == 'user'}
                     <div class="w-full items-end flex">
                         <div class="w-2/5"></div>
                         <div class="w-3/5 p-4 bg-white rounded-lg border">
-                            <P color="text-green-700 dark:text-green-500">{speaker}</P>
-                            {message}
+                            <P color="text-green-700 dark:text-green-500">{messages.speaker}</P>
+                            {messages.message}
                         </div>
                     </div>
                 {/if}
-                {#if speaker == 'bot'}
+                {#if messages.speaker == 'bot'}
                     <div class="w-full items-end flex">
                         <div class="w-3/5 p-4 bg-white rounded-lg border">
-                            <P color="text-blue-700 dark:text-blue-500">{speaker}</P>
-                            {message}
+                            <P color="text-blue-700 dark:text-blue-500">{messages.speaker}</P>
+                            {messages.message}
                         </div>
                         <div class="w-2/5"></div>
                     </div>
@@ -105,10 +106,12 @@
             {/each}
         </div>
         <div class=flex-none>
-            <ButtonGroup class="w-full">
-              <Input type="text" placeholder="💬 Chat here" size="lg" />
-              <GradientButton color="cyanToBlue" size="lg">Send</GradientButton>
-            </ButtonGroup>
+            <form method="post">
+                <ButtonGroup class="w-full">
+                    <Input type="text" placeholder="💬 Chat here" size="lg" name="chat" autocomplete="off"/>
+                    <GradientButton color="cyanToBlue" size="lg">Send</GradientButton>
+                </ButtonGroup>
+            </form>
         </div>
     </div>
 </div>
