@@ -21,3 +21,4 @@ $ npm run dev -- --host
 ## Task
 - [ ] increasing width more than 96(384px)
 - [ ] custom button
+- [ ] failed to send chat with button
