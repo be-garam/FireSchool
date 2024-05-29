@@ -49,19 +49,19 @@
     export let data;
 </script>
 
-<div class="flex items-center justify-center h-screen w-screen bg-neutral-100 gap-x-10 p-24">
-    <div class="flex-none w-96 h-full flex-col space-y-10 justify-start">
-        <Card class="bg-white space-y-6 flex-none">
+<div class="flex items-center justify-center h-screen w-screen bg-neutral-100 divide-x-2">
+    <div class="flex-none w-96 h-full flex-col space-y-14 justify-start bg-white py-12 px-4">
+        <div class="space-y-6 flex-none">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white">🗝️ Your school's keyword</h3>
             <div class="flex flex-row space-x-2">
                 {#each keyword_list as keyword (keyword)}
                     <Badge large color="indigo">{keyword}</Badge>
                 {/each}
             </div> 
-        </Card>
-        <Card class="bg-white space-y-2 flex-auto">
+        </div>
+        <div class="space-y-6 flex-auto">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white">👀 Seems Important</h3>
-            <Listgroup items={url_list} let:item class="border-0 dark:!bg-transparent">
+            <Listgroup items={url_list} let:item class="w-full">
                 <div class="flex flex-row space-x-2 items-center">
                     <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
                         {item.name}
@@ -69,10 +69,10 @@
                     <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
                 </div>
             </Listgroup>
-        </Card>
-        <Card class="bg-white space-y-2 flex-auto">
+        </div>
+        <div class="space-y-6 flex-auto">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white">🗂️ File we found</h3>
-            <Listgroup items={file_list} let:item class="border-0 dark:!bg-transparent">
+            <Listgroup items={file_list} let:item class="w-full">
                 <div class="flex flex-row space-x-2 items-center">
                     <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
                         {item.name}
@@ -80,9 +80,9 @@
                     <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
                 </div>
             </Listgroup>
-        </Card>
+        </div>
     </div>
-    <div class="flex-1 flex h-full flex-col space-y-4">
+    <div class="flex-1 flex h-full flex-col space-y-4 py-12 px-16">
         <div class="flex-auto flex-col space-y-4">
             {#each data.messages as messages (messages.id)}
                 {#if messages.speaker == 'user'}
