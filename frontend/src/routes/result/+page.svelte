@@ -1,5 +1,5 @@
 <script>
-    import {Card, Listgroup, GradientButton, Badge, Input, ButtonGroup, P} from 'flowbite-svelte';
+    import {GradientButton, Badge, Input, ButtonGroup, P} from 'flowbite-svelte';
     import { onMount } from 'svelte';
     
     let path = 'https://github.com/be-garam'
@@ -50,7 +50,7 @@
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100 divide-x-2">
-    <div class="flex-none w-96 h-full flex-col space-y-14 justify-start bg-white py-12 px-4">
+    <div class="flex-none w-80 h-full flex-col space-y-14 justify-start bg-white py-12 px-4">
         <div class="space-y-6 flex-none">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white">🗝️ Your school's keyword</h3>
             <div class="flex flex-row space-x-2">
@@ -61,28 +61,32 @@
         </div>
         <div class="space-y-6 flex-auto">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white">👀 Seems Important</h3>
-            <Listgroup items={url_list} let:item class="w-full">
-                <div class="flex flex-row space-x-2 items-center">
-                    <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
-                        {item.name}
-                    </p>
-                    <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
-                </div>
-            </Listgroup>
+            <div class="flex flex-col space-y-2">
+                {#each url_list as item (item.name)}
+                    <div class="flex flex-row space-x-2 items-center rounded bg-slate-100 px-2 py-2">
+                        <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white line-clamp-1">
+                            {item.name}
+                        </p>
+                        <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
+                    </div>
+                {/each}
+            </div>
         </div>
         <div class="space-y-6 flex-auto">
             <h3 class="text-xl font-medium text-gray-900 dark:text-white">🗂️ File we found</h3>
-            <Listgroup items={file_list} let:item class="w-full">
-                <div class="flex flex-row space-x-2 items-center">
-                    <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white">
-                        {item.name}
-                    </p>
-                    <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
-                </div>
-            </Listgroup>
+            <div class="flex flex-col space-y-2">
+                {#each url_list as item (item.name)}
+                    <div class="flex flex-row space-x-2 items-center rounded bg-slate-100 px-2 py-2">
+                        <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white line-clamp-1">
+                            {item.name}
+                        </p>
+                        <GradientButton href={item.path} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
+                    </div>
+                {/each}
+            </div>
         </div>
     </div>
-    <div class="flex-1 flex h-full flex-col space-y-4 py-12 px-16">
+    <div class="flex-1 flex h-full flex-col space-y-4 py-12 px-64">
         <div class="flex-auto flex-col space-y-4">
             {#each data.messages as messages (messages.id)}
                 {#if messages.speaker == 'user'}
