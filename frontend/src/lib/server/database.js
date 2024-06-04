@@ -44,19 +44,18 @@ export function createChat(userid, chat) {
 // }
 
 export async function getAnswer(uri, method = 'POST', chat, userid) {
-	const messages = db.get(userid);
-    const model_root = "http://10.125.208.189:9241";
-    let url = new URL(model_root + uri);
-    const headers = { 'Content-Type': 'application/json' };
+    let url = new URL("http://10.125.208.189:9241/v1/chat/completions");
+    const headers = { 'Content-Type': 'application/json'};
     let data = JSON.stringify({
         messages: [
           {
-            role: "school expert",
+            role: "school admissions specialist",
             content: chat
           }
         ],
         model: "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
     });
+    console.log(data);
     let options = {};
 
     if (method === 'POST' && Object.keys(data).length > 0) {
@@ -70,7 +69,6 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
         case 'POST':
             options = {
                 method,
-                headers,
                 body: data
             };
         case 'PUT':
@@ -84,12 +82,11 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
     }
     
 	const response = await fetch(url, options);
+    console.log(response);
 	const answer = await response.json();
     console.log(answer);
 	answer['id'] = crypto.randomUUID();
 	answer['speaker'] = "bot";
 	answer['message'] = "answer example";
-    console.log(answer);
 	return answer;
 }
-
