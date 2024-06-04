@@ -18,7 +18,7 @@ $ npm run dev -- --host
 - after setting like above, we need to update [tailwind.confg.cjs](frontend/tailwind.config.cjs)
 
 ## Task
-- [ ] Organize user flow
+- [x] Organize user flow
 - [ ] Study Docker content
 - [ ] Remind Svelte kit tutorial
 - [ ] A clear understanding of the API integration part → complete the test by attaching slm

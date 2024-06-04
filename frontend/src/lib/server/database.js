@@ -33,13 +33,63 @@ export function createChat(userid, chat) {
 	});
 }
 
-export function getAnswer(userid, chat) {
-	const messages = db.get(userid);
+// export function getAnswer(userid, chat) {
+// 	const messages = db.get(userid);
 
-	messages.push({
-		id: crypto.randomUUID(),
-		speaker: "bot",
-        message: "answer example"
-	});
+// 	messages.push({
+// 		id: crypto.randomUUID(),
+// 		speaker: "bot",
+//         message: "answer example"
+// 	});
+// }
+
+export async function getAnswer(uri, method = 'POST', chat, userid) {
+	const messages = db.get(userid);
+    const model_root = "http://10.125.208.189:9241";
+    let url = new URL(model_root + uri);
+    const headers = { 'Content-Type': 'application/json' };
+    let data = JSON.stringify({
+        messages: [
+          {
+            role: "school expert",
+            content: chat
+          }
+        ],
+        model: "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
+    });
+    let options = {};
+
+    if (method === 'POST' && Object.keys(data).length > 0) {
+        url.search = new URLSearchParams(data).toString();
+    }
+
+    switch (method) {
+        case 'GET':
+            options = { method };
+            break;
+        case 'POST':
+            options = {
+                method,
+                headers,
+                body: data
+            };
+        case 'PUT':
+            options = { method };
+            break;
+        case 'DELETE':
+            options = { method };
+            break;
+        default:
+            throw new Error('Unsupported HTTP method');
+    }
+    
+	const response = await fetch(url, options);
+	const answer = await response.json();
+    console.log(answer);
+	answer['id'] = crypto.randomUUID();
+	answer['speaker'] = "bot";
+	answer['message'] = "answer example";
+    console.log(answer);
+	return answer;
 }
 
