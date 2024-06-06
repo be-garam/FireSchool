@@ -47,6 +47,7 @@
     });
 
     export let data;
+
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100 divide-x-2">

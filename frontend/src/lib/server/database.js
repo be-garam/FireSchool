@@ -89,4 +89,4 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
 	answer['speaker'] = "bot";
 	answer['message'] = "answer example";
 	return answer;
-}
+}// }
