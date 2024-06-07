@@ -44,7 +44,7 @@ export function createChat(userid, chat) {
 // }
 
 export async function getAnswer(uri, method = 'POST', chat, userid) {
-    let url = new URL("http://10.125.208.189:9241/v1/chat/completions");
+    let url = 'http://10.125.208.189:9241/v1/chat/completions';
     const headers = { 'Content-Type': 'application/json'};
     let data = JSON.stringify({
         messages: [
@@ -58,9 +58,9 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
     console.log(data);
     let options = {};
 
-    if (method === 'POST' && Object.keys(data).length > 0) {
-        url.search = new URLSearchParams(data).toString();
-    }
+    // if (method === 'POST' && Object.keys(data).length > 0) {
+    //     url.search = new URLSearchParams(data).toString();
+    // }
 
     switch (method) {
         case 'GET':
@@ -68,8 +68,20 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
             break;
         case 'POST':
             options = {
-                method,
-                body: data
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    messages: [
+                    {
+                        role: "school admissions specialist",
+                        content: "hi"
+                    }
+                    ],
+                    model: "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
+                })
             };
         case 'PUT':
             options = { method };
