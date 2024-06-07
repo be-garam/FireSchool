@@ -38,6 +38,7 @@
 
     let pre_chat_list = [];
     let chat_list = [];
+    let chat_response = null;
 
     onMount(async () => {
         const res = await fetch('./chat.json');

@@ -60,6 +60,9 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
     });
     // console.log(data);
     let options = {};
+    let chatData = {};
+
+    const messages = db.get(userid);
 
     // if (method === 'POST' && Object.keys(data).length > 0) {
     //     url.search = new URLSearchParams(data).toString();
@@ -72,7 +75,7 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
             options = { method };
             break;
         case 'POST':
-            console.log("POST");
+            // console.log("POST");
             options = {
                 method,
                 headers,
@@ -100,11 +103,11 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
     }
     
 	const response = await fetch(url, options);
-    console.log(JSON.stringify(options));
 	const answer = await response.json();
-    console.log(answer);
-	answer['id'] = crypto.randomUUID();
-	answer['speaker'] = "bot";
-	answer['message'] = "answer example";
-	return answer;
+    chatData['id'] = crypto.randomUUID();
+	chatData['speaker'] = "bot";
+	chatData['message'] = answer.choices[0].message.content;
+    console.log(JSON.stringify(chatData));
+    messages.push(chatData);
+    return chatData;
 }// }
