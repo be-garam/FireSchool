@@ -45,7 +45,10 @@ export function createChat(userid, chat) {
 
 export async function getAnswer(uri, method = 'POST', chat, userid) {
     let url = 'http://10.125.208.189:9241/v1/chat/completions';
-    const headers = { 'Content-Type': 'application/json'};
+    const headers = { 
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+    };
     let data = JSON.stringify({
         messages: [
           {
@@ -55,24 +58,24 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
         ],
         model: "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
     });
-    console.log(data);
+    // console.log(data);
     let options = {};
 
     // if (method === 'POST' && Object.keys(data).length > 0) {
     //     url.search = new URLSearchParams(data).toString();
     // }
 
+
     switch (method) {
         case 'GET':
+            // console.log("GET");
             options = { method };
             break;
         case 'POST':
+            console.log("POST");
             options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'accept': 'application/json'
-                },
+                method,
+                headers,
                 body: JSON.stringify({
                     messages: [
                     {
@@ -83,10 +86,13 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
                     model: "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
                 })
             };
+            break;
         case 'PUT':
+            // console.log("PUT");
             options = { method };
             break;
         case 'DELETE':
+            // console.log("DELETE");
             options = { method };
             break;
         default:
@@ -94,7 +100,7 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
     }
     
 	const response = await fetch(url, options);
-    console.log(response);
+    console.log(JSON.stringify(options));
 	const answer = await response.json();
     console.log(answer);
 	answer['id'] = crypto.randomUUID();
