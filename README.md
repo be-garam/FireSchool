@@ -48,6 +48,14 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True  # 개발 환경에서만 사용, 실제 배포 시에는 특정 도메인만 허용
 ```
 
+### Migration
+``` terminal
+$ python manage.py makemigrations
+$ python manage.py migrate
+$ python manage.py createsuperuser
+$ python manage.py runserver 
+```
+
 
 ## Tasks and todo 
 - [x] Organize user flow
