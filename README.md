@@ -17,6 +17,38 @@ $ npm run dev -- --host
 ```
 - after setting like above, we need to update [tailwind.confg.cjs](frontend/tailwind.config.cjs)
 
+## Django
+### terminal
+``` terminal
+$ conda install django django-ninja
+$ pip install django-cors-headers
+$ django-admin startproject backend
+$ cd backend
+$ python manage.py startapp api
+```
+
+### SurfSchool/backend/settings.py
+- INSTALLED_APPS에 api 추가
+- django-cors-headers 설정 
+- ko-kr setting, 등
+``` python
+# settings.py
+INSTALLED_APPS = [
+    ...,
+    'corsheaders',
+    'api',
+]
+
+MIDDLEWARE = [
+    ...,
+    'corsheaders.middleware.CorsMiddleware',
+    ...,
+]
+
+CORS_ALLOW_ALL_ORIGINS = True  # 개발 환경에서만 사용, 실제 배포 시에는 특정 도메인만 허용
+```
+
+
 ## Tasks and todo 
 - [x] Organize user flow
 - [ ] Study Docker content
