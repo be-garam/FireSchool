@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders', # CORS : conda install django-cors-headers
-    'ninja_extra', # ninja_extra: conda install django-ninja-jwt
-    'ninja_jwt', #  ninja_jwt: conda install django-ninja-jwt
+    # 'ninja_extra', # ninja_extra: conda install django-ninja-jwt
+    # 'ninja_jwt', #  ninja_jwt: conda install django-ninja-jwt
     'api', # api: app
 ]
 
