@@ -3,6 +3,7 @@ from .models import School, SchoolData
 
 import requests
 import json
+import re 
 
 
 api = NinjaAPI()
@@ -45,6 +46,23 @@ def cms_get_school(request, school_name: str, school_link: str):
 def cms_get_school_data(request, school_name: str):
     school = School.objects.get(name=school_name)
 
+    def extract_files(contents):
+        # want to extract files' links with "https://~.pdf" or .jpg, .hwp format
+        pattern = r"https://[^\s]+?\.(pdf|hwp)"
+
+        # 내용에서 모든 매칭되는 링크 찾기
+        file_links = re.findall(pattern, contents)
+
+        if len(file_links) <= 3:
+            i_pattern = r"https://[^\s]+?\.(jpg|png)"
+            img_links = re.findall(i_pattern, contents)
+
+        links = file_links + img_links
+        if links:
+            return links
+        else: 
+            return []
+
     # preparing requests data for open slm 
     url = "http://10.125.208.189:9241/v1/chat/completions"
 
@@ -58,7 +76,7 @@ def cms_get_school_data(request, school_name: str):
             {"role": "api", "content": """
                 다른 부가 설명없이 아래의 양식대로 입학예정자에게 도움이 될 정보들로 각 list에 값이 딱 3개만 들어갈 수 있도록 데이터를 얻어주세요.
                 이때, keywords를 위한 각 elements들은 2단어 이하로 추출하고, files는 pdf 파일이 가장 우선이고, 그외 파일의 경우에는 해당 file의 url로 저장해줘
-                양식:{"links":[], "files":[], "keywords":[]}
+                양식:{"links":[], "keywords":[]}
                 """}
         ],
         "model": "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
@@ -81,7 +99,7 @@ def cms_get_school_data(request, school_name: str):
         school_data = SchoolData.objects.create(
             school=school,
             links=json_data.get('links'),
-            files=json_data.get('files'),
+            files=extract_files(school.contents),
             keywords=json_data.get('keywords')
         )
         school_data.save()
@@ -124,4 +142,24 @@ def chat_completions(request, chat: str, userid: str, school_name: str):
         }
         return chatResponse
 
-    
+# User get school's name from School
+@api.get("/school_list")
+def school_list(request):
+    schools = School.objects.all()
+    return schools
+
+# User get school data
+@api.post("/school_data")
+def school_data(request, school_name: str):
+    school = School.objects.get(name=school_name)
+    school_data = SchoolData.objects.filter(school=school)
+
+    if school_data.exists():
+        school_data = school_data.last()
+        return {
+            "links": school_data.links,
+            "files": school_data.files,
+            "keywords": school_data.keywords
+        }
+    else:
+        return {"result": "school data not found"}
