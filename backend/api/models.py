@@ -6,6 +6,7 @@ from django.utils import timezone
 class School(models.Model):
     name = models.CharField(max_length=200) # 학교 명
     urls = models.JSONField() # # URL 목록을 저장하는 JSON 필드
+    contents = models.TextField(default="") # crawled data
     date_added = models.DateTimeField('date added', default=timezone.now)
 
     class Meta:
@@ -19,7 +20,6 @@ class School(models.Model):
 
 class SchoolData(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='data')
-    contents = models.TextField() # crawled data
     links = models.JSONField() # links extracted from the contents
     files = models.JSONField() # files extracted from the contents
     keywords = models.JSONField() # keywords extracted from the contents
