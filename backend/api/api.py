@@ -146,6 +146,8 @@ def chat_completions(request, chat: str, userid: str, school_name: str):
 @api.get("/school_list")
 def school_list(request):
     schools = School.objects.all()
+    # want to return only school names
+    schools = [school.name for school in schools]
     return schools
 
 # User get school data
