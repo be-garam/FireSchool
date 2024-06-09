@@ -18,7 +18,7 @@ $ npm run dev -- --host
 - after setting like above, we need to update [tailwind.confg.cjs](frontend/tailwind.config.cjs)
 
 ## Django
-### terminal
+### Setting
 ``` terminal
 $ conda install django django-ninja
 $ pip install django-cors-headers
@@ -53,9 +53,11 @@ CORS_ALLOW_ALL_ORIGINS = True  # 개발 환경에서만 사용, 실제 배포 �
 $ python manage.py makemigrations
 $ python manage.py migrate
 $ python manage.py createsuperuser
-$ python manage.py runserver 
 ```
-
+### Running
+``` terminal
+$ python manage.py runserver
+```
 
 ## Tasks and todo 
 - [x] Organize user flow
