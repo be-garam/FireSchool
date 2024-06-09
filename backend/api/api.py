@@ -38,3 +38,10 @@ def get_school(request, school_name: str, school_link: str):
         school.save()
 
         return {"result": "school data created successfully"}
+
+# extract datas(link, files, keywords) from school contents
+@api.post("/get_school_data")
+def get_school_data(request, school_name: str):
+    school = School.objects.get(name=school_name)
+
+    

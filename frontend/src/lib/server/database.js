@@ -102,6 +102,8 @@ export async function getAnswer(uri, method = 'POST', chat, userid) {
             throw new Error('Unsupported HTTP method');
     }
     
+    console.log(options);
+
 	const response = await fetch(url, options);
 	const answer = await response.json();
     chatData['id'] = crypto.randomUUID();
