@@ -89,6 +89,11 @@ Markdown Content:
 """
 
 url = "http://10.125.208.189:9241/v1/chat/completions"
+
+headers = {
+    "Content-Type": "application/json"
+}
+
 payload = {
     "messages": [
         {"role": "system", "content": system_content},
@@ -100,11 +105,6 @@ payload = {
     ],
     "model": "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
 }
-
-headers = {
-    "Content-Type": "application/json"
-}
-
 
 # def get_gpt_response(system_content):
 #     response = openai.ChatCompletion.create(
