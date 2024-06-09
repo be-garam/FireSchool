@@ -9,7 +9,7 @@ class SchoolDataInline(admin.TabularInline):
 class SchoolAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('Date information', {'fields': ['date_added', 'contents'], 'classes': ['collapse']}),
+        ('Date information', {'fields': ['date_added', 'urls', 'contents'], 'classes': ['collapse']}),
     ]
     inlines = [SchoolDataInline]
     list_display = ('name', 'date_added')
