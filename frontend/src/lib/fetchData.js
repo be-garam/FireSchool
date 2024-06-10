@@ -14,6 +14,11 @@ export async function fetchData(uri, method = 'GET', data = {}) {
             options = { method };
             break;
         case 'POST':
+            options = {
+                method,
+                body: data
+            };
+            break;
         case 'PUT':
             options = {
                 method,
@@ -28,6 +33,9 @@ export async function fetchData(uri, method = 'GET', data = {}) {
             throw new Error('Unsupported HTTP method');
     }
     
+    console.log(options);
+
     const response = await fetch(url, options);
+    console.log(response);
     return await response.json();
 }
