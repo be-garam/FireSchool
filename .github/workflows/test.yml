@@ -28,14 +28,17 @@ jobs:
 
     - name: Apply migrations
       run: |
+        cd FireSchool/backend
         conda run -n myenv python manage.py migrate
 
     - name: Run tests
       run: |
+        cd FireSchool/backend
         conda run -n myenv python manage.py test
 
     - name: Run Django server
       run: |
+        cd FireSchool/backend
         conda run -n myenv python manage.py runserver
       env:
         DJANGO_SETTINGS_MODULE: myproject.settings
