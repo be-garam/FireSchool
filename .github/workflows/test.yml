@@ -24,22 +24,18 @@ jobs:
 
     - name: Install additional dependencies
       run: |
-        source activate myenv
-        pip install -r requirements.txt
+        conda run -n myenv pip install -r requirements.txt
 
     - name: Apply migrations
       run: |
-        source activate myenv
-        python manage.py migrate
+        conda run -n myenv python manage.py migrate
 
     - name: Run tests
       run: |
-        source activate myenv
-        python manage.py test
+        conda run -n myenv python manage.py test
 
     - name: Run Django server
       run: |
-        source activate myenv
-        python manage.py runserver
+        conda run -n myenv python manage.py runserver
       env:
         DJANGO_SETTINGS_MODULE: myproject.settings
