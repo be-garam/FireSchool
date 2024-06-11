@@ -36,4 +36,4 @@ jobs:
         cd backend
         conda run -n myenv python manage.py runserver
       env:
-        DJANGO_SETTINGS_MODULE: myproject.settings
+        DJANGO_SETTINGS_MODULE: backend.settings

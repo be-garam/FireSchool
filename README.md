@@ -59,18 +59,6 @@ $ python manage.py createsuperuser
 $ python manage.py runserver
 ```
 
-## Tasks and todo 
-- [x] Organize user flow
-- [ ] Study Docker content
-- [ ] Remind Svelte kit tutorial
-- [ ] A clear understanding of the API integration part → complete the test by attaching slm
-- [ ] Write crawling code
-- [ ] Extract the desired file from the crawling code
-- [ ] Test whether the content can be checked based on the crawling data to slm
-- [ ] Deployment through Docker
-- [ ] Contemplation on handling cookies, sessions, etc.
------
-
 ### User and Data flow
 -----
 - Point) I'll never gather user's data
@@ -88,3 +76,14 @@ $ python manage.py runserver
 10. `f_4` teach SLM to get information base on `f_2_4` data
     - founded way: we just need to give content with "role": "system"
 11. `f_5` User ask SLM for new data and get answer for this
+
+## TODO
+- [x] Organize user flow
+- [x] Remind Svelte kit tutorial
+- [x] A clear understanding of the API integration part → complete the test by attaching slm
+- [x] Write crawling code
+- [x] Extract the desired file from the crawling code
+- [x] Test whether the content can be checked based on the crawling data to slm
+- [ ] Deployment through Docker
+- [ ] Contemplation on handling cookies, sessions, etc.
+- [ ] Study Docker content
