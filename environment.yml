@@ -26,7 +26,7 @@ dependencies:
 - libuv=1.48.0=hd590300_0
 - libzlib=1.2.13=hd590300_5
 - ncurses=6.4=h6a678d5_0
-# - nodejs=20.12.2=hb753e55_0
+- nodejs=20.12.2=hb753e55_0
 - openssl=3.3.0=hd590300_0
 - pip=24.0=py312h06a4308_0
 - pydantic=2.5.3=py312h06a4308_0
