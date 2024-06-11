@@ -7,8 +7,6 @@
     // for select field
     let selected;
     let schools = [];
-    let loading = false;
-    let error = null;
 
     async function loadSchools() {
         try {
@@ -26,7 +24,7 @@
             console.error('Failed to load schools:', error);
         }
     }
-    
+
     function handleSubmit(event) {
         event.preventDefault();
         goto(`/result?school_name=${encodeURIComponent(selected)}`);

@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchDataQuery } from '$lib/fetchDataQuery.js';
-    import { GradientButton, Badge, Input, ButtonGroup, P } from 'flowbite-svelte';
+    import { GradientButton, Badge, Input, ButtonGroup, P, Spinner } from 'flowbite-svelte';
     import { page } from '$app/stores';
 
     let schoolData = null;
@@ -37,7 +37,6 @@
         file_list = schoolData.files || [];
     }
 
-    // 예시 데이터
     let pre_chat_list = [];
     let chat_list = [];
     let chat_response = null;
@@ -59,8 +58,9 @@
 
 {#if !schoolData && !error}
     <div class="flex items-center justify-center h-screen w-screen bg-neutral-100">
-        <div class="flex flex-col space-y-10 items-center justify-center w-fit container mx-auto w-fit">
-            <p class="text-6xl">Loading...</p>
+        <div class="flex flex-col space-y-10 items-center justify-center">
+            <p class="text-6xl">Surfing School...🌊🏄</p>
+            <Spinner color="blue" size="12"/>
         </div>
     </div>
 {:else}
