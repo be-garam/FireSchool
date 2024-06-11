@@ -57,9 +57,9 @@ def cms_get_school_data(request, school_name: str):
             i_pattern = r"https://[^\s]+?\.(jpg|png)"
             img_links = re.findall(i_pattern, contents)
 
-        links = file_links + img_links
-        if links:
-            return links
+        files_links = file_links + img_links
+        if files_links:
+            return files_links
         else: 
             return []
 
@@ -74,9 +74,10 @@ def cms_get_school_data(request, school_name: str):
         "messages": [
             {"role": "system", "content": school.contents},
             {"role": "api", "content": """
-                다른 부가 설명없이 아래의 양식대로 입학예정자에게 도움이 될 정보들로 각 list에 값이 딱 3개만 들어갈 수 있도록 데이터를 얻어주세요.
-                이때, keywords를 위한 각 elements들은 2단어 이하로 추출하고, files는 pdf 파일이 가장 우선이고, 그외 파일의 경우에는 해당 file의 url로 저장해줘
-                양식:{"links":[], "keywords":[]}
+                한국어나 영어로 부가 설명없이 아래의 양식으로 해당 학교를 처음 접한 입학예정자에게 학교를 소개하는데 도움이 될 정보들로 각 list에 값이 딱 3개만 들어갈 수 있도록 데이터를 얻어주세요.
+                이때, keywords를 위한 각 elements들은 2단어 이하로 추출하고, urls는 https://로 시작하는 링크들만 추출해주세요.
+                files는 pdf, hwp, jpg, png 파일들의 링크들을 우선순위로 두고 추출해주세요.
+                양식:{"links":[], "files": [], "keywords":[]}
                 """}
         ],
         "model": "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
@@ -84,10 +85,11 @@ def cms_get_school_data(request, school_name: str):
 
     # requests to open slm
     response = requests.post(url, headers=headers, data=json.dumps(payload))
+    # print(response.json())
 
     if response.status_code == 200:
         answer = response.json().get('choices')[0].get('message').get('content')
-
+        print(answer)
         # converting the response to a json
         json_string = answer
         # Clean up the string (remove the '</content>' tag)
@@ -99,7 +101,8 @@ def cms_get_school_data(request, school_name: str):
         school_data = SchoolData.objects.create(
             school=school,
             links=json_data.get('links'),
-            files=extract_files(school.contents),
+            # files=extract_files(school.contents),
+            files=json_data.get('files'),
             keywords=json_data.get('keywords')
         )
         school_data.save()

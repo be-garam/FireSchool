@@ -1,4 +1,5 @@
 import * as db from '$lib/server/database.js';
+import { fetchDataQuery } from '$lib/fetchDataQuery.js';
 
 export function load({ cookies }) {
 	let id = cookies.get('userid');

@@ -26,40 +26,16 @@
             console.error('Failed to load schools:', error);
         }
     }
+    
+    function handleSubmit(event) {
+        event.preventDefault();
+        goto(`/result?school_name=${encodeURIComponent(selected)}`);
+    }
 
     // 컴포넌트가 마운트될 때 API 호출
     onMount(() => {
         loadSchools();
     });
-
-    // for loading school data
-
-    async function loadSchoolData() {
-        loading = true;
-        goto('/loading', { replaceState: true });
-
-        try {
-            const data = await fetchData("api/school_data", "POST", { school_name: selected });
-            loading = false;
-
-            goto('/result', {
-                replaceState: true,
-                state: {
-                    schoolData: data
-                }
-            });
-        } catch (err) {
-            error = err.message;
-            loading = false;
-            console.error('Failed to load school data:', err);
-        }
-    }
-
-    // for button click event
-    function handleSubmit(event) {
-        event.preventDefault();
-        loadSchoolData();
-    }
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100">
