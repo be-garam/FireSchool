@@ -131,7 +131,8 @@ def chat_completions(request, chat: str, school_name: str):
             {"role": "system", "content": school.contents + "Please respond in Korean"},
             {"role": "user", "content": chat}
         ],
-        "model": "OpenBuddy/openbuddy-llama3-8b-v21.1-8k"
+        "model": "OpenBuddy/openbuddy-llama3-8b-v21.1-8k", 
+        "max_tokens": 500,
     }
 
     # requests to open slm

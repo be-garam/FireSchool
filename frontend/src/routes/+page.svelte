@@ -37,7 +37,7 @@
 </script>
 
 <div class="flex items-center justify-center h-screen w-screen bg-neutral-100">
-    <div class="flex flex-col space-y-10 items-center justify-center w-fit container mx-auto w-fit">
+    <div class="flex flex-col space-y-10 items-center justify-center container mx-auto w-fit">
         <p class="text-6xl">Let's Surf School 🌊🏄🏫</p>
         <div class="flex flex-col space-y-2 w-full items-center">
             <form class="w-full flex flex-row space-x-2" on:submit|preventDefault={handleSubmit}>

@@ -4,7 +4,17 @@ web app for crawling school homepage and get information by chatting with GPT
 ## Prototype
 - [prototype link](https://www.figma.com/proto/D1EF1mWfnYy6P35D4QXWyS/FireSchool?page-id=0%3A1&type=design&node-id=5-55&viewport=122%2C463%2C0.1&t=dSSh5TIK81uSF9LJ-1&scaling=contain&starting-point-node-id=1%3A3&mode=design)
 
-# Installing what we need
+# For User / What is this project?
+1. Do you see your desired school?
+    1. Select the school and click "Surf".
+    2. The left sidebar will display the school's key keywords, links, and files.
+    3. Need more information? Use the chat feature to ask questions. (Remember, GPT may sometimes provide incorrect answers!)
+2. Don't see your desired school?
+    1. Click "Don't see the school you want? Click here" at the bottom.
+    2. Enter the desired school and its primary link, then submit.
+    3. I will update the data soon!
+
+# For Developer / Installing what we need
 ## Svelte
 ``` terminal
 $ conda install -c conda-forge nodejs=20
@@ -58,6 +68,9 @@ $ python manage.py createsuperuser
 ``` terminal
 $ python manage.py runserver
 ```
+
+### Git Actions
+- Now we are just testing problem occured in django
 
 ### User and Data flow
 -----

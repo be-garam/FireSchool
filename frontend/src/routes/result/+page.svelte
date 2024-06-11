@@ -1,8 +1,11 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchDataQuery } from '$lib/fetchDataQuery.js';
-    import { GradientButton, Badge, Input, ButtonGroup, P, Spinner } from 'flowbite-svelte';
+    import { GradientButton, Badge, Input, Helper, Dropdown, DropdownItem, ButtonGroup, P, Spinner, Alert} from 'flowbite-svelte';
+    import { DotsHorizontalOutline, DotsVerticalOutline } from 'flowbite-svelte-icons';
+
     import { page } from '$app/stores';
+    import { goto } from '$app/navigation';
 
     // small screen
     let isSmallScreen = false;
@@ -116,7 +119,57 @@
         event.preventDefault();
         chat();
     }
+
+    // routing to home
+    function navigateHome() {
+        goto('/');
+    }
+
+    // routing to join
+    let path = "https://github.com/be-garam/FireSchool"
+
+    // setting for alert
+    let showAlert = false;
+    let alertMessage = '';
+    let alertType = 'success';
+
+    // link copy to clipboard
+    function copyLink(link) {
+        console.log(link);
+        navigator.clipboard.writeText(link).then(() => {
+            alertMessage = 'Link copied to clipboard';
+            alertType = 'success';
+            showAlert = true;
+        }).catch(err => {
+            alertMessage = 'Failed to copy link';
+            alertType = 'error';
+            showAlert = true;
+        });
+    }
+
+    // open the link in a new tab
+    function moveToLink(link) {
+        console.log(link);
+        try {
+            window.open(link, '_blank');
+            alertMessage = 'Link opened in new tab';
+            alertType = 'success';
+            showAlert = true;
+        } catch (err) {
+            alertMessage = 'Failed to open link';
+            alertType = 'error';
+            showAlert = true;
+        }
+    }
+
+    let dropdownOpen = false;
 </script>
+
+<style>
+    .home {
+      cursor: pointer;
+    }
+</style>
 
 {#if !schoolData && !error}
     <div class="flex items-center justify-center h-screen w-screen bg-neutral-100">
@@ -140,81 +193,116 @@
                 <p class="text-6xl"> 🫷 Strech me!😖 🫸</p>
             </div>
         {:else}
-            <div class="flex items-center justify-center h-screen w-screen bg-neutral-100 divide-x-2">
-                <div class="flex-none w-80 h-full flex-col space-y-14 justify-start bg-white py-12 px-4">
-                    <div class="space-y-6 flex-none">
-                        <h3 class="text-xl font-medium text-gray-900 dark:text-white">🗝️ Your school's keyword</h3>
+            <div class="flex items-center justify-center h-screen w-screen bg-white">
+                <!-- {#if showAlert}
+                <Alert on:close={() => showAlert = false}>
+                    {alertMessage}
+                </Alert>
+                {/if} -->
+                <div class="flex flex-none w-80 h-full flex-col space-y-8 justify-start bg-grayCustomSide px-6">
+                    <div class="flex flex-row space-x-2 py-4">
+                        <p class="text-xl font-medium text-gray-900 dark:text-white w-full text-grayCustom">🌊 SurfSchool</p>
+                        <button class="w-6 h-6" on:click={navigateHome}>
+                            <img src="/home.svg" alt="Logo" class="home" />
+                        </button>
+                    </div>
+                    <div class="flex-none">
+                        <h3 class="text-l font-medium text-grayCustomDark dark:text-white py-2">🗝️ Your school's keyword</h3>
                         <div class="flex flex-row space-x-2">
                             {#each keyword_list as keyword (keyword)}
-                                <Badge large color="indigo">{keyword}</Badge>
+                                <div class="w-fit rounded bg-grayCustomCard px-2 py-2">
+                                    <p class="grow font-medium text-xl text-slate-950 truncate">
+                                        {keyword}
+                                    </p>
+                                </div>
                             {/each}
                         </div> 
                     </div>
-                    <div class="space-y-6 flex-auto">
-                        <h3 class="text-xl font-medium text-gray-900 dark:text-white">👀 Seems Important</h3>
+                    <div class="flex-none">
+                        <h3 class="text-l font-medium text-grayCustomDark py-2">👀 Seems Important</h3>
                         <div class="flex flex-col space-y-2">
                             {#each url_list as item, index (index)}
-                                <div class="flex flex-row space-x-2 items-center rounded bg-slate-100 px-2 py-2">
-                                    <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white line-clamp-1">
+                                <button class="flex flex-row space-x-2 items-center rounded bg-grayCustomCard px-2 py-2 rounded-lg" on:click={() => moveToLink(item)}>
+                                    <p class="grow text-sm font-normal text-lg text-slate-950 truncate max-w-56">
                                         {item}
                                     </p>
-                                    <GradientButton href={item} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
-                                </div>
+                                    <button class="w-5 h-5">
+                                        <img src="/open.svg" alt="Logo" class="open" />
+                                    </button>
+                                </button>
                             {/each}
                         </div>
                     </div>
-                    <div class="space-y-6 flex-auto">
-                        <h3 class="text-xl font-medium text-gray-900 dark:text-white">🗂️ Files we found</h3>
+                    <div class="grow">
+                        <h3 class="text-l font-medium text-grayCustomDark py-2">🗂️ Files we found</h3>
                         <div class="flex flex-col space-y-2">
                             {#each file_list as item, index (index)}
-                                <div class="flex flex-row space-x-2 items-center rounded bg-slate-100 px-2 py-2">
-                                    <p class="grow text-sm font-medium text-gray-900 truncate dark:text-white line-clamp-1">
+                                <button class="flex flex-row space-x-2 items-center rounded bg-grayCustomCard px-2 py-2 rounded-lg" on:click={() => moveToLink(item)}>
+                                    <p class="grow text-sm font-normal text-lg text-slate-950 truncate max-w-56">
                                         {item}
                                     </p>
-                                    <GradientButton href={item} color="cyanToBlue" size="xs">🌊 Surf</GradientButton>
-                                </div>
+                                    <button class="w-5 h-5">
+                                        <img src="/open.svg" alt="Logo" class="open" />
+                                    </button>
+                                </button>
                             {/each}
                         </div>
                     </div>
-                </div>
-                <div class="flex-1 flex h-full flex-col space-y-4 py-12 px-64">
-                    <div class="flex-auto flex-col space-y-4 overflow-y-auto">
-                        {#if Array.isArray(data.messages)}
-                            {#each data.messages as messages, index (index)}
-                                {#if messages.speaker == 'user'}
-                                    <div class="w-full items-end flex">
-                                        <div class="w-2/5"></div>
-                                        <div class="w-3/5 p-4 bg-white rounded-lg border">
-                                            <P color="text-green-700 dark:text-green-500">{messages.speaker}</P>
-                                            {messages.message}
-                                        </div>
-                                    </div>
-                                {/if}
-                                {#if messages.speaker == 'bot'}
-                                    <div class="w-full items-end flex">
-                                        <div class="w-4/5 p-4 bg-white rounded-lg border">
-                                            <P color="text-blue-700 dark:text-blue-500">{messages.speaker}</P>
-                                            {#if messages.message === '...'}
-                                                <Spinner color="blue" size="6"/>
-                                            {:else}
-                                                {messages.message}
-                                            {/if}
-                                        </div>
-                                        <div class="w-1/5"></div>
-                                    </div>
-                                {/if}
-                            {/each}
-                        {:else}
-                            <p>No messages available</p>
-                        {/if}
+                    <div class="flex-none py-8">
+                        <GradientButton type="submit" color="cyanToBlue" class="w-full" href={path}>🌊 Want to join?</GradientButton>        
                     </div>
-                    <div class=flex-none>
-                        <form on:submit={handleSubmit}>
-                            <ButtonGroup class="w-full">
-                                <Input type="text" placeholder="💬 Chat here" size="lg" name="chat" bind:value={question} autocomplete="off"/>
-                                <GradientButton color="cyanToBlue" size="lg" type="submit">Send</GradientButton>
-                            </ButtonGroup>
-                        </form>
+                </div>
+                <div class="flex-1 flex h-full flex-col">
+                    <div class="flex flex-row space-x-2 px-6 py-4">
+                        <p class="text-xl font-medium text-gray-900 dark:text-white w-full text-grayCustom">{school_name}</p>
+                        <button class="w-6 h-6" on:click={navigateHome}>
+                            <img src="/error.svg" alt="Logo" class="error" />
+                        </button>
+                    </div>
+                    <div class="flex-auto overflow-y-auto px-60">
+                        <div class="flex-col space-y-4 w-full h-full">
+                            {#if Array.isArray(data.messages)}
+                                {#each data.messages as messages, index (index)}
+                                    {#if messages.speaker == 'user'}
+                                        <div class="w-full items-end flex">
+                                            <div class="w-2/5"></div>
+                                            <div class="w-3/5 p-4 bg-grayCustomLight rounded-lg border">
+                                                <P color="text-green-700 dark:text-green-500">{messages.speaker}</P>
+                                                {messages.message}
+                                            </div>
+                                        </div>
+                                    {/if}
+                                    {#if messages.speaker == 'bot'}
+                                        <div class="w-full items-end flex">
+                                            <div class="w-4/5 p-4 rounded-lg">
+                                                <P color="text-blue-700 dark:text-blue-500">{messages.speaker}</P>
+                                                {#if messages.message === '...'}
+                                                    <Spinner color="blue" size="6"/>
+                                                {:else}
+                                                    {messages.message}
+                                                {/if}
+                                            </div>
+                                            <div class="w-1/5"></div>
+                                        </div>
+                                    {/if}
+                                {/each}
+                            {:else}
+                                <p>No messages available</p>
+                            {/if}
+                        </div>
+                    </div>
+                    <div class="flex px-60 py-4">
+                        <div class="flex flex-col space-y-2 items-center justify-center w-full">
+                            <form on:submit={handleSubmit} class="w-full">
+                                <ButtonGroup class="w-full grayCustom">
+                                    <Input type="text" placeholder="💬 Chat here" size="lg" name="chat" bind:value={question} autocomplete="off"/>
+                                    <GradientButton color="cyanToBlue" size="lg" type="submit">Send</GradientButton>
+                                </ButtonGroup>
+                            </form>
+                            <Helper class="text-sm">
+                                Always remember that GPT results may be inaccurate.
+                            </Helper>
+                        </div>
                     </div>
                 </div>
             </div>
