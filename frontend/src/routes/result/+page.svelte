@@ -62,10 +62,19 @@
             const chat_response = await fetchDataQuery("api/chat/completions", "POST", { chat: question, school_name });
             console.log(chat_response);
             // adding chat response to data
-            data.messages.push({ speaker: 'user', message: question });
-            data.messages.push(chat_response);
+            if (chat_response) {
+                data = {
+                    ...data, 
+                    messages: [
+                        ...data.messages,
+                        { speaker: 'user', message: question },
+                        chat_response
+                    ]
+                };
+            } else {
+                console.log('No messages found: ', data);
+            };
             question = '';
-            console.log(data.messages);
         } catch (err) {
             error = err.message;
             console.log(error);
@@ -133,7 +142,7 @@
                 </div>
             </div>
             <div class="flex-1 flex h-full flex-col space-y-4 py-12 px-64">
-                <div class="flex-auto flex-col space-y-4">
+                <div class="flex-auto flex-col space-y-4 overflow-y-auto">
                     {#if Array.isArray(data.messages)}
                         {#each data.messages as messages, index (index)}
                             {#if messages.speaker == 'user'}
