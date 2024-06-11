@@ -57,27 +57,42 @@
 
     let question;
     // Chatting
-    async function chat(){
+    let loading = false;
+
+    async function chat() {
         try {
+            // 유저의 질문을 먼저 메시지 리스트에 추가하고 입력 필드 초기화
+            data = {
+                ...data,
+                messages: [
+                    ...data.messages,
+                    { speaker: 'user', message: question },
+                    { speaker: 'bot', message: '...' } // 임시 메시지로 스피너를 표시
+                ]
+            };
+            question = ''; // 입력 필드 초기화
+
+            // 로딩 상태 설정
+            loading = true;
+
+            // API 호출
             const chat_response = await fetchDataQuery("api/chat/completions", "POST", { chat: question, school_name });
             console.log(chat_response);
-            // adding chat response to data
-            if (chat_response) {
-                data = {
-                    ...data, 
-                    messages: [
-                        ...data.messages,
-                        { speaker: 'user', message: question },
-                        chat_response
-                    ]
-                };
-            } else {
-                console.log('No messages found: ', data);
-            };
-            question = '';
+
+            // 메시지 리스트에서 임시 메시지 제거하고 실제 응답 추가
+            data.messages = data.messages.map((msg, index) => 
+                index === data.messages.length - 1
+                    ? { speaker: 'bot', message: chat_response.message }
+                    : msg
+            );
+
+            // 로딩 상태 해제
+            loading = false;
+
         } catch (err) {
             error = err.message;
             console.log(error);
+            loading = false;
         }
     }
 
@@ -158,7 +173,11 @@
                                 <div class="w-full items-end flex">
                                     <div class="w-3/5 p-4 bg-white rounded-lg border">
                                         <P color="text-blue-700 dark:text-blue-500">{messages.speaker}</P>
-                                        {messages.message}
+                                        {#if messages.message === '...'}
+                                            <Spinner color="blue" size="6"/>
+                                        {:else}
+                                            {messages.message}
+                                        {/if}
                                     </div>
                                     <div class="w-2/5"></div>
                                 </div>
