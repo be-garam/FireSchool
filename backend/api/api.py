@@ -1,5 +1,5 @@
 from ninja import NinjaAPI
-from .models import School, SchoolData
+from .models import School, SchoolData, SuggestedSchool, UserReport
 
 import requests
 import json
@@ -170,3 +170,40 @@ def school_data(request, school_name: str):
         }
     else:
         return {"result": "school data not found"}
+
+# POST api to get user's suggestion and save it to database
+@api.post("/user_suggest_school")
+def user_suggest_school(request, user_name: str, school_name: str, school_link: str):
+    
+    suggestedSchool = SuggestedSchool.objects.create(
+        user_name=user_name,
+        school_name=school_name,
+        school_link=school_link
+    )
+    suggestedSchool.save()
+
+    return {"result": "school data suggested successfully"}
+
+# User get suggested school data list
+@api.get("/suggested_school_list")
+def suggested_school_list(request):
+    suggested_schools = SuggestedSchool.objects.all()
+    suggested_schools = [{
+        "user_name": suggested_school.user_name,
+        "school_name": suggested_school.school_name,
+        "school_link": suggested_school.school_link,
+        "date_suggested": suggested_school.date_suggested
+    } for suggested_school in suggested_schools]
+    return suggested_schools
+
+# POST api for User to report Error
+@api.post("/user_report_error")
+def user_report_error(request, school_name: str, error: str):
+        
+        userReport = UserReport.objects.create(
+            school_name=school_name,
+            error=error
+        )
+        userReport.save()
+    
+        return {"result": "error reported successfully"}
