@@ -1,0 +1,41 @@
+name: Django Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install conda
+        conda env create -f environment.yml
+        source activate myenv
+        pip install -r requirements.txt
+
+    - name: Apply migrations
+      run: |
+        source activate myenv
+        python manage.py migrate
+
+    - name: Run tests
+      run: |
+        source activate myenv
+        python manage.py test
+
+    - name: Run Django server
+      run: |
+        source activate myenv
+        python manage.py runserver
+      env:
+        DJANGO_SETTINGS_MODULE: myproject.settings
