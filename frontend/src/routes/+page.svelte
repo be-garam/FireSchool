@@ -47,7 +47,7 @@
                 <GradientButton type="submit" outline color="cyanToBlue" class="w-40">🌊 Surf</GradientButton>        
             </form>
             <Helper class="text-sm">
-                We’ll never share your details. Read our <a href="/" class="font-medium text-primary-600 hover:underline dark:text-primary-500"> Privacy Policy </a>
+            Don't see the school you want? <a href="/suggest" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Click here</a>
             </Helper>
         </div>
     </div>
