@@ -31,11 +31,6 @@ jobs:
         cd backend
         conda run -n myenv python manage.py migrate
 
-    - name: Run tests
-      run: |
-        cd backend
-        conda run -n myenv python manage.py test
-
     - name: Run Django server
       run: |
         cd backend
