@@ -114,7 +114,8 @@ def cms_get_school_data(request, school_name: str):
 
 # User chat with open slm
 @api.post("/chat/completions")
-def chat_completions(request, chat: str, userid: str, school_name: str):
+# def chat_completions(request, chat: str, userid: str, school_name: str):
+def chat_completions(request, chat: str, school_name: str):
     school = School.objects.get(name=school_name)
 
     # preparing requests data for open slm 
@@ -139,7 +140,7 @@ def chat_completions(request, chat: str, userid: str, school_name: str):
     if response.status_code == 200:
         answer = response.json().get('choices')[0].get('message').get('content')
         chatResponse = {
-            "id": userid,
+            # "id": userid,
             "speaker": "bot",
             "message": answer,
         }

@@ -4,10 +4,12 @@
     import { GradientButton, Badge, Input, ButtonGroup, P, Spinner } from 'flowbite-svelte';
     import { page } from '$app/stores';
 
+    // getting School name from URL
     let schoolData = null;
     let error = null;
     let school_name = null;
 
+    // add school_data by fetching from API
     $: {
         school_name = new URLSearchParams($page.url.search).get('school_name');
     }
@@ -26,7 +28,6 @@
         }
     });
 
-    let path = 'https://github.com/be-garam';
     let keyword_list = [];
     let url_list = [];
     let file_list = [];
@@ -37,9 +38,9 @@
         file_list = schoolData.files || [];
     }
 
+    // Chat list: not going to added in DB just calling api
     let pre_chat_list = [];
     let chat_list = [];
-    let chat_response = null;
 
     onMount(async () => {
         const res = await fetch('./chat.json');
@@ -48,11 +49,32 @@
         console.log(chat_list.messages);
     });
 
-    export let data = { messages: [] };  // 기본값 설정
+    export let data = { messages: [] };
 
-    // 데이터 로딩 시 기본값 설정
     if (!data.messages) {
         data.messages = [];
+    }
+
+    let question;
+    // Chatting
+    async function chat(){
+        try {
+            const chat_response = await fetchDataQuery("api/chat/completions", "POST", { chat: question, school_name });
+            console.log(chat_response);
+            // adding chat response to data
+            data.messages.push({ speaker: 'user', message: question });
+            data.messages.push(chat_response);
+            question = '';
+            console.log(data.messages);
+        } catch (err) {
+            error = err.message;
+            console.log(error);
+        }
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        chat();
     }
 </script>
 
@@ -138,10 +160,10 @@
                     {/if}
                 </div>
                 <div class=flex-none>
-                    <form method="post">
+                    <form on:submit={handleSubmit}>
                         <ButtonGroup class="w-full">
-                            <Input type="text" placeholder="💬 Chat here" size="lg" name="chat" autocomplete="off"/>
-                            <!-- <GradientButton color="cyanToBlue" size="lg">Send</GradientButton> -->
+                            <Input type="text" placeholder="💬 Chat here" size="lg" name="chat" bind:value={question} autocomplete="off"/>
+                            <GradientButton color="cyanToBlue" size="lg" type="submit">Send</GradientButton>
                         </ButtonGroup>
                     </form>
                 </div>
