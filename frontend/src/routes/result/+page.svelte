@@ -1,11 +1,11 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchDataQuery } from '$lib/fetchDataQuery.js';
-    import { GradientButton, Badge, Input, Helper, ButtonGroup, P, Spinner, Alert} from 'flowbite-svelte';
-    import { DotsHorizontalOutline, DotsVerticalOutline } from 'flowbite-svelte-icons';
+    import { GradientButton, Modal, Label, Input, Helper, ButtonGroup, P, Spinner, Textarea, Alert } from 'flowbite-svelte';
 
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
+    import { writable } from 'svelte/store';
 
     // small screen
     let isSmallScreen = false;
@@ -128,41 +128,62 @@
     // routing to join
     let path = "https://github.com/be-garam/FireSchool"
 
-    // setting for alert
-    let showAlert = false;
-    let alertMessage = '';
-    let alertType = 'success';
-
-    // link copy to clipboard
-    function copyLink(link) {
-        console.log(link);
-        navigator.clipboard.writeText(link).then(() => {
-            alertMessage = 'Link copied to clipboard';
-            alertType = 'success';
-            showAlert = true;
-        }).catch(err => {
-            alertMessage = 'Failed to copy link';
-            alertType = 'error';
-            showAlert = true;
-        });
-    }
-
     // open the link in a new tab
     function moveToLink(link) {
         console.log(link);
         try {
             window.open(link, '_blank');
-            alertMessage = 'Link opened in new tab';
-            alertType = 'success';
-            showAlert = true;
         } catch (err) {
             alertMessage = 'Failed to open link';
             alertType = 'error';
-            showAlert = true;
         }
     }
 
-    let dropdownOpen = false;
+    // modal for error report
+    let formModal = writable(false);
+    let errorReport = '';
+    
+    // setting for alert
+    let alertMessage = '';
+    let alertType = 'success';
+    let showAlert = writable(false);
+
+    // post error to dev
+    async function postError() {
+        try {
+            console.log('Error:', errorReport);
+            console.log('School:', school_name);
+            const errorResponse = await fetchDataQuery("api/user_report_error", "POST", { school_name: school_name, error: errorReport });
+            console.log(errorResponse);
+            if (errorResponse.result === "error reported successfully") {
+                alertMessage = 'Successfully posted the error to Dev!';
+                alertType = 'success';
+                showAlert.set(true);
+                formModal.set(false); // 모달 닫기
+            } else {
+                throw new Error('Unexpected response from server');
+            }
+        } catch (err) {
+            console.error('Failed to post error:', err);
+            alertMessage = 'Failed to post error to Dev!';
+            alertType = 'error';
+            showAlert.set(true);
+        }
+    }
+
+    function handleErrorSubmit(event) {
+        event.preventDefault();
+        postError();
+    }
+
+    function openFormModal() {
+        formModal.set(true);
+    }
+
+    function closeAlert() {
+        showAlert.set(false);
+    }
+
 </script>
 
 <style>
@@ -194,11 +215,11 @@
             </div>
         {:else}
             <div class="flex items-center justify-center h-screen w-screen bg-white">
-                <!-- {#if showAlert}
-                <Alert on:close={() => showAlert = false}>
-                    {alertMessage}
-                </Alert>
-                {/if} -->
+                {#if $showAlert}
+                    <Alert dismissable color="blue" on:close={closeAlert => showAlert = false} class="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50">
+                        {alertMessage}
+                    </Alert>
+                {/if}
                 <div class="flex flex-none w-80 h-full flex-col space-y-8 justify-start bg-grayCustomSide px-6">
                     <div class="flex flex-row space-x-2 py-4">
                         <p class="text-xl font-medium text-gray-900 dark:text-white w-full text-grayCustom">🌊 SurfSchool</p>
@@ -255,7 +276,7 @@
                 <div class="flex-1 flex h-full flex-col">
                     <div class="flex flex-row space-x-2 px-6 py-4">
                         <p class="text-xl font-medium text-gray-900 dark:text-white w-full text-grayCustom">{school_name}</p>
-                        <button class="w-6 h-6" on:click={navigateHome}>
+                        <button class="w-6 h-6" on:click={openFormModal}>
                             <img src="/error.svg" alt="Logo" class="error" />
                         </button>
                     </div>
@@ -306,6 +327,17 @@
                     </div>
                 </div>
             </div>
+
+            <Modal bind:open={$formModal} size="xs" autoclose={false} class="w-full">
+                <form class="flex flex-col space-y-6" action="#" on:submit={handleErrorSubmit}>
+                    <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Help Developer to check Issue</h3>
+                    <div class="flex flex-col space-y-2">
+                        <Label for="errorReport" class="mb-2">Your message</Label>
+                        <Textarea id="errorReport" placeholder="Error you've faced" rows="4" bind:value={errorReport} />
+                    </div>  
+                    <GradientButton type="submit" color="cyanToBlue" class="w-full">Send Error to Dev</GradientButton>
+                </form>
+            </Modal>
         {/if}
     {/if}
 {/if}

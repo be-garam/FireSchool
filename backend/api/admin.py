@@ -6,6 +6,10 @@ class SchoolDataInline(admin.TabularInline):
     model = SchoolData
     extra = 3
 
+class UserReportInline(admin.TabularInline):
+    model = UserReport
+    extra = 3
+
 class SchoolAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
@@ -23,11 +27,7 @@ class SuggestedSchoolAdmin(admin.ModelAdmin):
     search_fields = ['user_name', 'school_name']
 
 class UserReportAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': ['school_name']}),
-        ('Error information', {'fields': ['error', 'date_reported'], 'classes': ['collapse']}),
-    ]
-    list_display = ('school_name', 'date_reported')
+    list_display = ('school_name', 'date_reported', 'error')
     list_filter = ['date_reported']
     search_fields = ['school_name']
 
