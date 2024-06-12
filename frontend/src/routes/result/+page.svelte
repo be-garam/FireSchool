@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { fetchDataQuery } from '$lib/fetchDataQuery.js';
-    import { GradientButton, Badge, Input, Helper, Dropdown, DropdownItem, ButtonGroup, P, Spinner, Alert} from 'flowbite-svelte';
+    import { GradientButton, Badge, Input, Helper, ButtonGroup, P, Spinner, Alert} from 'flowbite-svelte';
     import { DotsHorizontalOutline, DotsVerticalOutline } from 'flowbite-svelte-icons';
 
     import { page } from '$app/stores';
